@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Namma Naadu – Explore Karnataka</title>
+<style>
+/* ── Reset & Base ─────────────────────────────── */
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --green:#2e7d32;--green-light:#43a047;--gold:#f9a825;
+  --orange:#e65100;--cream:#fffde7;--dark:#1a1a2e;
+}
+body{font-family:'Segoe UI',sans-serif;background:#f9fafb;color:#333;}
+
+/* ── NAV ──────────────────────────────────────── */
+nav{background:var(--dark);padding:14px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(0,0,0,.4);}
+.brand{color:#fff;font-size:1.4rem;font-weight:800;letter-spacing:.5px;}
+.brand span{color:var(--gold);}
+.nav-links a{color:#ccc;text-decoration:none;margin-left:22px;font-size:.88rem;transition:color .2s;}
+.nav-links a:hover{color:var(--gold);}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;}
+.hamburger span{width:24px;height:2px;background:#fff;border-radius:2px;}
+@media(max-width:700px){.nav-links{display:none;}.hamburger{display:flex;}}
+
+/* ── HERO ─────────────────────────────────────── */
+.hero{background:linear-gradient(135deg,var(--dark) 0%,#16213e 50%,var(--green) 100%);color:#fff;padding:90px 32px 80px;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='20'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");}
+.hero h1{font-size:3rem;font-weight:900;letter-spacing:1px;text-shadow:0 2px 10px rgba(0,0,0,.4);}
+.hero h1 span{color:var(--gold);}
+.hero p{font-size:1.1rem;margin:14px auto;max-width:600px;opacity:.85;}
+.hero-btns{margin-top:26px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+.btn-hero{padding:13px 30px;border-radius:30px;font-size:.95rem;font-weight:700;cursor:pointer;border:none;transition:all .2s;}
+.btn-primary-hero{background:var(--gold);color:var(--dark);}
+.btn-primary-hero:hover{background:#f57f17;transform:translateY(-2px);}
+.btn-outline-hero{background:transparent;color:#fff;border:2px solid #fff;}
+.btn-outline-hero:hover{background:#fff;color:var(--dark);}
+
+/* ── SEARCH BAR ───────────────────────────────── */
+.search-section{background:#fff;padding:30px 32px;box-shadow:0 2px 8px rgba(0,0,0,.07);}
+.search-row{max-width:900px;margin:0 auto;display:flex;gap:12px;flex-wrap:wrap;}
+.search-row input,.search-row select{flex:1;min-width:180px;padding:12px 16px;border:1.5px solid #e0e0e0;border-radius:10px;font-size:.9rem;}
+.search-row input:focus,.search-row select:focus{outline:none;border-color:var(--green-light);}
+.btn-search{padding:12px 28px;background:var(--green);color:#fff;border:none;border-radius:10px;font-size:.9rem;font-weight:700;cursor:pointer;transition:background .2s;}
+.btn-search:hover{background:var(--green-light);}
+
+/* ── SECTION ──────────────────────────────────── */
+.section{padding:50px 32px;}
+.section-title{text-align:center;margin-bottom:34px;}
+.section-title h2{font-size:1.7rem;font-weight:800;color:var(--dark);}
+.section-title p{color:#777;margin-top:8px;font-size:.92rem;}
+.divider{width:60px;height:4px;background:var(--gold);border-radius:2px;margin:10px auto 0;}
+
+/* ── GRID ─────────────────────────────────────── */
+.grid3{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:24px;max-width:1100px;margin:0 auto;}
+.grid4{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px;max-width:1100px;margin:0 auto;}
+
+/* ── DESTINATION CARD ─────────────────────────── */
+.dest-card{border-radius:16px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,.1);background:#fff;transition:transform .25s,box-shadow .25s;cursor:pointer;}
+.dest-card:hover{transform:translateY(-6px);box-shadow:0 10px 30px rgba(0,0,0,.15);}
+.dest-img{height:200px;display:flex;align-items:center;justify-content:center;font-size:5rem;position:relative;}
+.dest-badge{position:absolute;top:12px;right:12px;background:var(--gold);color:var(--dark);padding:3px 10px;border-radius:20px;font-size:.72rem;font-weight:700;}
+.dest-body{padding:18px;}
+.dest-name{font-size:1.05rem;font-weight:700;margin-bottom:6px;}
+.dest-loc{font-size:.8rem;color:#888;margin-bottom:8px;}
+.dest-desc{font-size:.82rem;color:#666;line-height:1.55;margin-bottom:12px;}
+.dest-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;}
+.tag{background:#f0fdf4;color:var(--green);border:1px solid #bbf7d0;padding:2px 10px;border-radius:20px;font-size:.72rem;font-weight:600;}
+.dest-footer{display:flex;align-items:center;justify-content:space-between;}
+.rating{color:var(--gold);font-size:.85rem;font-weight:600;}
+.btn-explore{background:var(--green);color:#fff;border:none;border-radius:8px;padding:7px 16px;font-size:.78rem;font-weight:700;cursor:pointer;transition:background .2s;}
+.btn-explore:hover{background:var(--green-light);}
+
+/* ── CATEGORY PILLS ───────────────────────────── */
+.category-row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:28px;max-width:1100px;margin-left:auto;margin-right:auto;}
+.pill{padding:8px 20px;border-radius:30px;border:2px solid var(--green);color:var(--green);font-size:.82rem;font-weight:700;cursor:pointer;transition:all .2s;}
+.pill.active,.pill:hover{background:var(--green);color:#fff;}
+
+/* ── ITINERARY SECTION ────────────────────────── */
+.itin-section{background:var(--cream);padding:50px 32px;}
+.itin-card{background:#fff;border-radius:14px;padding:22px;box-shadow:0 2px 10px rgba(0,0,0,.07);max-width:1100px;margin:0 auto;}
+.day-block{border-left:3px solid var(--green);padding-left:18px;margin-bottom:22px;}
+.day-block h3{color:var(--green);font-size:1rem;font-weight:700;margin-bottom:10px;}
+.timeline-item{display:flex;gap:14px;align-items:flex-start;margin-bottom:12px;}
+.time-badge{background:var(--green);color:#fff;border-radius:8px;padding:4px 10px;font-size:.75rem;font-weight:700;white-space:nowrap;}
+.timeline-content{font-size:.85rem;color:#555;line-height:1.55;}
+.timeline-content strong{color:#333;}
+
+/* ── TIPS ─────────────────────────────────────── */
+.tip-card{background:#fff;border-radius:14px;padding:20px;box-shadow:0 2px 10px rgba(0,0,0,.07);border-top:4px solid var(--gold);}
+.tip-card h3{font-size:.95rem;font-weight:700;margin-bottom:10px;color:var(--dark);}
+.tip-card ul{padding-left:18px;}
+.tip-card ul li{font-size:.82rem;color:#555;margin-bottom:6px;line-height:1.5;}
+
+/* ── FESTIVAL CARD ────────────────────────────── */
+.fest-card{background:#fff;border-radius:14px;padding:20px;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,.07);transition:transform .2s;}
+.fest-card:hover{transform:translateY(-4px);}
+.fest-emoji{font-size:3rem;margin-bottom:10px;}
+.fest-name{font-weight:700;font-size:1rem;margin-bottom:6px;}
+.fest-date{font-size:.8rem;color:var(--gold);font-weight:600;margin-bottom:8px;}
+.fest-desc{font-size:.8rem;color:#777;line-height:1.5;}
+
+/* ── MODAL ────────────────────────────────────── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:200;align-items:center;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal{background:#fff;border-radius:18px;max-width:560px;width:90%;padding:30px;max-height:90vh;overflow-y:auto;position:relative;}
+.modal-close{position:absolute;top:14px;right:18px;font-size:1.4rem;cursor:pointer;color:#aaa;}
+.modal-emoji{font-size:4rem;text-align:center;margin-bottom:14px;}
+.modal h2{font-size:1.3rem;font-weight:800;margin-bottom:8px;}
+.modal .meta{font-size:.82rem;color:#888;margin-bottom:14px;}
+.modal p{font-size:.88rem;line-height:1.65;color:#555;margin-bottom:12px;}
+.modal .highlights{background:#f0fdf4;border-radius:10px;padding:14px;margin-bottom:12px;}
+.modal .highlights h4{font-size:.88rem;font-weight:700;color:var(--green);margin-bottom:8px;}
+.modal .highlights ul{padding-left:18px;}
+.modal .highlights ul li{font-size:.82rem;color:#555;margin-bottom:4px;}
+
+/* ── FOOTER ───────────────────────────────────── */
+footer{background:var(--dark);color:#aaa;text-align:center;padding:28px;font-size:.85rem;}
+footer span{color:var(--gold);}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="brand">Namma <span>Naadu</span></div>
+  <div class="nav-links">
+    <a href="#destinations">Destinations</a>
+    <a href="#itinerary">Itinerary</a>
+    <a href="#festivals">Festivals</a>
+    <a href="#tips">Travel Tips</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <div class="hamburger"><span></span><span></span><span></span></div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <h1>Explore <span>Karnataka</span><br>Like Never Before</h1>
+  <p>Discover the land of sandalwood, ancient temples, coffee estates, and royal heritage — Namma Naadu awaits you.</p>
+  <div class="hero-btns">
+    <button class="btn-hero btn-primary-hero" onclick="scrollTo('destinations')">🗺️ Explore Destinations</button>
+    <button class="btn-hero btn-outline-hero" onclick="scrollTo('itinerary')">📅 Plan Your Trip</button>
+  </div>
+</section>
+
+<!-- SEARCH -->
+<div class="search-section">
+  <div class="search-row">
+    <input type="text" id="search-input" placeholder="🔍 Search destinations, cities, experiences..." oninput="filterDestinations()">
+    <select id="category-filter" onchange="filterDestinations()">
+      <option value="">All Categories</option>
+      <option value="Heritage">Heritage</option>
+      <option value="Nature">Nature</option>
+      <option value="Wildlife">Wildlife</option>
+      <option value="Beach">Beach</option>
+      <option value="Hills">Hills</option>
+      <option value="Spiritual">Spiritual</option>
+    </select>
+    <button class="btn-search" onclick="filterDestinations()">Search</button>
+  </div>
+</div>
+
+<!-- DESTINATIONS -->
+<section class="section" id="destinations">
+  <div class="section-title">
+    <h2>✨ Popular Destinations</h2>
+    <p>From ancient ruins to pristine beaches — Karnataka has it all</p>
+    <div class="divider"></div>
+  </div>
+
+  <div class="category-row" id="category-pills">
+    <div class="pill active" onclick="setPill(this,'')">All</div>
+    <div class="pill" onclick="setPill(this,'Heritage')">🏛️ Heritage</div>
+    <div class="pill" onclick="setPill(this,'Nature')">🌿 Nature</div>
+    <div class="pill" onclick="setPill(this,'Wildlife')">🐾 Wildlife</div>
+    <div class="pill" onclick="setPill(this,'Beach')">🏖️ Beach</div>
+    <div class="pill" onclick="setPill(this,'Hills')">⛰️ Hills</div>
+    <div class="pill" onclick="setPill(this,'Spiritual')">🙏 Spiritual</div>
+  </div>
+
+  <div class="grid3" id="dest-grid"></div>
+</section>
+
+<!-- ITINERARY -->
+<section class="itin-section" id="itinerary">
+  <div class="section-title">
+    <h2>📅 Sample 5-Day Karnataka Itinerary</h2>
+    <p>A curated journey through the best of Karnataka</p>
+    <div class="divider"></div>
+  </div>
+  <div class="itin-card">
+    <div class="day-block">
+      <h3>Day 1 – Bengaluru (City of Gardens)</h3>
+      <div class="timeline-item"><span class="time-badge">Morning</span><div class="timeline-content"><strong>Lalbagh Botanical Garden</strong> – Stroll through 240 acres of lush greenery and century-old trees.</div></div>
+      <div class="timeline-item"><span class="time-badge">Afternoon</span><div class="timeline-content"><strong>Bangalore Palace</strong> – Tudor-style architecture inspired by Windsor Castle.</div></div>
+      <div class="timeline-item"><span class="time-badge">Evening</span><div class="timeline-content"><strong>MG Road & Brigade Road</strong> – Shopping, street food, and the famous Koshy's café.</div></div>
+    </div>
+    <div class="day-block">
+      <h3>Day 2 – Mysuru (City of Palaces)</h3>
+      <div class="timeline-item"><span class="time-badge">Morning</span><div class="timeline-content"><strong>Mysore Palace</strong> – One of India's most magnificent royal palaces; arrive early to beat the crowds.</div></div>
+      <div class="timeline-item"><span class="time-badge">Afternoon</span><div class="timeline-content"><strong>Chamundeshwari Temple</strong> – Hilltop temple with panoramic city views; 1,000-step climb.</div></div>
+      <div class="timeline-item"><span class="time-badge">Evening</span><div class="timeline-content"><strong>Devaraja Market</strong> – Flowers, spices, and silk; a riot of colours and aromas.</div></div>
+    </div>
+    <div class="day-block">
+      <h3>Day 3 – Coorg (Scotland of India)</h3>
+      <div class="timeline-item"><span class="time-badge">Morning</span><div class="timeline-content"><strong>Abbey Falls</strong> – Misty 70-foot waterfall surrounded by coffee and pepper estates.</div></div>
+      <div class="timeline-item"><span class="time-badge">Afternoon</span><div class="timeline-content"><strong>Raja's Seat</strong> – Historic sunset viewpoint used by Coorg kings.</div></div>
+      <div class="timeline-item"><span class="time-badge">Evening</span><div class="timeline-content"><strong>Homestay Experience</strong> – Stay with a Kodava family; enjoy authentic pandi curry and kaad mannu kozhicurry.</div></div>
+    </div>
+    <div class="day-block">
+      <h3>Day 4 – Hampi (UNESCO World Heritage)</h3>
+      <div class="timeline-item"><span class="time-badge">Morning</span><div class="timeline-content"><strong>Virupaksha Temple</strong> – 7th-century temple still in active worship; an architectural marvel.</div></div>
+      <div class="timeline-item"><span class="time-badge">Afternoon</span><div class="timeline-content"><strong>Stone Chariot & Vittala Temple</strong> – The iconic stone chariot is Karnataka's emblem on the ₹50 note.</div></div>
+      <div class="timeline-item"><span class="time-badge">Evening</span><div class="timeline-content"><strong>Matanga Hill</strong> – Best sunset spot in Hampi; boulders glow golden at dusk.</div></div>
+    </div>
+    <div class="day-block">
+      <h3>Day 5 – Gokarna (Temple Town & Beaches)</h3>
+      <div class="timeline-item"><span class="time-badge">Morning</span><div class="timeline-content"><strong>Mahabaleshwar Temple</strong> – Ancient Shiva temple with the sacred Atmalinga.</div></div>
+      <div class="timeline-item"><span class="time-badge">Afternoon</span><div class="timeline-content"><strong>Om Beach</strong> – Naturally shaped like the OM symbol; great for swimming and kayaking.</div></div>
+      <div class="timeline-item"><span class="time-badge">Evening</span><div class="timeline-content"><strong>Half Moon & Paradise Beach</strong> – Secluded beaches accessible only by boat or trek.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FESTIVALS -->
+<section class="section" id="festivals">
+  <div class="section-title">
+    <h2>🎉 Karnataka Festivals</h2>
+    <p>Plan your visit around these vibrant cultural celebrations</p>
+    <div class="divider"></div>
+  </div>
+  <div class="grid4">
+    <div class="fest-card">
+      <div class="fest-emoji">👑</div>
+      <div class="fest-name">Mysuru Dasara</div>
+      <div class="fest-date">October</div>
+      <div class="fest-desc">A 10-day royal extravaganza with illuminated palace, elephant procession & cultural shows. The state festival of Karnataka.</div>
+    </div>
+    <div class="fest-card">
+      <div class="fest-emoji">🪔</div>
+      <div class="fest-name">Ugadi</div>
+      <div class="fest-date">March / April</div>
+      <div class="fest-desc">Kannada New Year celebrated with traditional pachadi, new clothes, temple visits, and family feasts.</div>
+    </div>
+    <div class="fest-card">
+      <div class="fest-emoji">🌾</div>
+      <div class="fest-name">Pattadakal Dance Festival</div>
+      <div class="fest-date">January</div>
+      <div class="fest-desc">Classical dance performances against the backdrop of the 8th-century UNESCO Pattadakal temples.</div>
+    </div>
+    <div class="fest-card">
+      <div class="fest-emoji">🎭</div>
+      <div class="fest-name">Hampi Utsav</div>
+      <div class="fest-date">November</div>
+      <div class="fest-desc">Three-day cultural festival at the Vijayanagara ruins — music, dance, puppet shows, and heritage walks.</div>
+    </div>
+    <div class="fest-card">
+      <div class="fest-emoji">☕</div>
+      <div class="fest-name">Coorg Coffee Festival</div>
+      <div class="fest-date">December</div>
+      <div class="fest-desc">Celebrate the coffee harvest with estate tours, tastings, and local Kodava cuisine in the Western Ghats.</div>
+    </div>
+    <div class="fest-card">
+      <div class="fest-emoji">🎪</div>
+      <div class="fest-name">Karaga Festival</div>
+      <div class="fest-date">March / April</div>
+      <div class="fest-desc">Ancient Bengaluru festival where the priest carries a flower pyramid on his head in a midnight procession.</div>
+    </div>
+    <div class="fest-card">
+      <div class="fest-emoji">🏖️</div>
+      <div class="fest-name">Gokarna Beach Festival</div>
+      <div class="fest-date">January</div>
+      <div class="fest-desc">Music, yoga, cultural events, and bonfire nights on the sacred beaches of Gokarna.</div>
+    </div>
+    <div class="fest-card">
+      <div class="fest-emoji">🌊</div>
+      <div class="fest-name">Murudeshwar Sea Festival</div>
+      <div class="fest-date">February</div>
+      <div class="fest-desc">Watersports, temple visits, and a celebration of Karnataka's coastal culture near the tallest Shiva statue.</div>
+    </div>
+  </div>
+</section>
+
+<!-- TRAVEL TIPS -->
+<section class="section" id="tips" style="background:#f0fdf4;">
+  <div class="section-title">
+    <h2>🧳 Travel Tips for Karnataka</h2>
+    <p>Insider advice to make your journey smooth</p>
+    <div class="divider"></div>
+  </div>
+  <div class="grid3">
+    <div class="tip-card">
+      <h3>🗓️ Best Time to Visit</h3>
+      <ul>
+        <li><strong>Oct – Feb:</strong> Best overall; pleasant weather across the state</li>
+        <li><strong>Mar – May:</strong> Hot; ideal for coastal and hill stations</li>
+        <li><strong>Jun – Sep:</strong> Monsoon; waterfalls and Coorg are stunning</li>
+        <li>Avoid peak summer in Hampi (extremely hot)</li>
+      </ul>
+    </div>
+    <div class="tip-card">
+      <h3>🚌 Getting Around</h3>
+      <ul>
+        <li>KSRTC buses connect all major cities — affordable and reliable</li>
+        <li>Book trains via IRCTC for inter-city travel</li>
+        <li>Rent a two-wheeler in Hampi, Coorg & Gokarna for flexibility</li>
+        <li>Bengaluru Metro (Namma Metro) for city travel</li>
+        <li>Auto-rickshaws for last-mile connectivity everywhere</li>
+      </ul>
+    </div>
+    <div class="tip-card">
+      <h3>🍛 Food to Try</h3>
+      <ul>
+        <li><strong>Masala Dosa</strong> – Must-try at Vidyarthi Bhavan, Bengaluru</li>
+        <li><strong>Bisi Bele Bath</strong> – Spiced lentil-rice dish unique to Karnataka</li>
+        <li><strong>Pandi Curry</strong> – Coorg-style pork curry with kachampuli</li>
+        <li><strong>Kadubu</strong> – Steamed rice dumplings in coconut milk</li>
+        <li><strong>Filter Coffee</strong> – A Malnad ritual you cannot miss</li>
+      </ul>
+    </div>
+    <div class="tip-card">
+      <h3>💡 Smart Travel Tips</h3>
+      <ul>
+        <li>Carry a printed/offline map for remote areas like Hampi</li>
+        <li>Book Mysore Palace tickets online to skip queues</li>
+        <li>Bargain at Devaraja Market but be respectful</li>
+        <li>Wildlife sanctuaries require advance safari booking</li>
+        <li>Respect dress codes at temples (cover knees and shoulders)</li>
+      </ul>
+    </div>
+    <div class="tip-card">
+      <h3>🏨 Where to Stay</h3>
+      <ul>
+        <li><strong>Bengaluru:</strong> Koramangala & Indiranagar for hip stays</li>
+        <li><strong>Mysuru:</strong> Hotels near Palace Road for best access</li>
+        <li><strong>Coorg:</strong> Homestays in Madikeri for authentic experience</li>
+        <li><strong>Hampi:</strong> Guesthouses in Virupapur Gaddi (river island)</li>
+        <li><strong>Gokarna:</strong> Beach huts near Om Beach</li>
+      </ul>
+    </div>
+    <div class="tip-card">
+      <h3>📱 Useful Apps & Links</h3>
+      <ul>
+        <li><strong>KSRTC App</strong> – Bus booking across Karnataka</li>
+        <li><strong>Karnataka Tourism</strong> – Official site for permits & info</li>
+        <li><strong>Namma Metro App</strong> – Bengaluru metro routes & fares</li>
+        <li><strong>Google Maps</strong> – Works well even in remote areas</li>
+        <li><strong>Weather apps:</strong> Check Accuweather for Coorg & Malnad</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="section" id="contact" style="background:#fff;">
+  <div class="section-title">
+    <h2>📬 Plan Your Trip With Us</h2>
+    <p>Get personalized Karnataka itineraries</p>
+    <div class="divider"></div>
+  </div>
+  <div style="max-width:500px;margin:0 auto;background:#f9fafb;padding:28px;border-radius:16px;box-shadow:0 2px 10px rgba(0,0,0,.07);">
+    <div style="margin-bottom:14px;">
+      <label style="font-size:.85rem;font-weight:600;color:#555;display:block;margin-bottom:5px;">Full Name</label>
+      <input type="text" id="c-name" placeholder="Ramesh Kumar" style="width:100%;padding:11px 14px;border:1.5px solid #e0e0e0;border-radius:9px;font-size:.9rem;">
+    </div>
+    <div style="margin-bottom:14px;">
+      <label style="font-size:.85rem;font-weight:600;color:#555;display:block;margin-bottom:5px;">Email</label>
+      <input type="email" id="c-email" placeholder="ramesh@email.com" style="width:100%;padding:11px 14px;border:1.5px solid #e0e0e0;border-radius:9px;font-size:.9rem;">
+    </div>
+    <div style="margin-bottom:14px;">
+      <label style="font-size:.85rem;font-weight:600;color:#555;display:block;margin-bottom:5px;">Interested In</label>
+      <select id="c-interest" style="width:100%;padding:11px 14px;border:1.5px solid #e0e0e0;border-radius:9px;font-size:.9rem;">
+        <option>Heritage & History</option>
+        <option>Nature & Trekking</option>
+        <option>Wildlife Safari</option>
+        <option>Beach & Coastal</option>
+        <option>Spiritual Pilgrimage</option>
+        <option>Full Karnataka Tour</option>
+      </select>
+    </div>
+    <div style="margin-bottom:18px;">
+      <label style="font-size:.85rem;font-weight:600;color:#555;display:block;margin-bottom:5px;">Message</label>
+      <textarea id="c-msg" placeholder="Tell us about your travel plans..." rows="4" style="width:100%;padding:11px 14px;border:1.5px solid #e0e0e0;border-radius:9px;font-size:.9rem;resize:vertical;"></textarea>
+    </div>
+    <button onclick="submitContact()" style="width:100%;padding:13px;background:linear-gradient(135deg,var(--green),var(--green-light));color:#fff;border:none;border-radius:10px;font-size:1rem;font-weight:700;cursor:pointer;">🌿 Send Enquiry</button>
+    <div id="contact-msg" style="display:none;text-align:center;margin-top:14px;background:#d4edda;padding:12px;border-radius:8px;color:#155724;font-weight:600;">
+      ✅ Thank you! We'll contact you within 24 hours.
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>🌿 <span>Namma Naadu</span> – Explore the Heart of Karnataka</p>
+  <p style="margin-top:6px;">Built with ❤️ using HTML, CSS, JavaScript &nbsp;|&nbsp; GitHub Version Control</p>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal" onclick="closeModal(event)">
+  <div class="modal">
+    <span class="modal-close" onclick="closeModalDirect()">✕</span>
+    <div class="modal-emoji" id="m-emoji"></div>
+    <h2 id="m-name"></h2>
+    <div class="meta" id="m-meta"></div>
+    <p id="m-desc"></p>
+    <div class="highlights">
+      <h4>🌟 Highlights</h4>
+      <ul id="m-highlights"></ul>
+    </div>
+    <p id="m-tips" style="font-size:.82rem;color:#777;"></p>
+  </div>
+</div>
+
+<script>
+const DESTINATIONS = [
+  {id:1,name:'Hampi',loc:'Ballari District',category:'Heritage',emoji:'🏛️',badge:'UNESCO',
+   desc:'Ancient capital of the Vijayanagara Empire. Dramatic boulder-strewn landscape with over 1,600 surviving remains of the last great Hindu kingdom.',
+   rating:'4.9',tags:['Ruins','UNESCO','Trekking','Photography'],
+   highlights:['Virupaksha Temple (7th century)','Stone Chariot at Vittala Temple','Elephant Stables','Lotus Mahal','Matanga Hill sunset'],
+   tips:'💡 Best visited Oct–Feb. Hire a cycle or auto for the ruins. Sunrise at Matanga Hill is unmissable.'},
+  {id:2,name:'Mysuru',loc:'Mysuru District',category:'Heritage',emoji:'👑',badge:'Royal',
+   desc:"India's palace city with the magnificent Mysore Palace, silk sarees, sandalwood, and the world-famous Dasara festival.",
+   rating:'4.8',tags:['Palace','Silk','Heritage','Culture'],
+   highlights:['Mysore Palace (illuminated on Sundays)','Chamundeshwari Temple','Brindavan Gardens','Devaraja Market','Zoo (one of India\'s best)'],
+   tips:'💡 Visit on a Sunday evening to see the palace illuminated with 97,000 bulbs. Book Dasara in advance.'},
+  {id:3,name:'Coorg (Kodagu)',loc:'Kodagu District',category:'Hills',emoji:'☕',badge:'Scenic',
+   desc:"The 'Scotland of India' — rolling coffee and tea estates, misty hills, brave Kodava culture, and roaring waterfalls.",
+   rating:'4.8',tags:['Coffee','Trekking','Nature','Homestay'],
+   highlights:['Abbey Falls','Raja\'s Seat','Namdroling Monastery (Golden Temple)','Talakaveri — source of River Cauvery','Elephant camp at Dubare'],
+   tips:'💡 Stay in a coffee estate homestay for the authentic experience. Monsoon (Jun–Sep) makes waterfalls spectacular.'},
+  {id:4,name:'Gokarna',loc:'Uttara Kannada',category:'Beach',emoji:'🏖️',badge:'Serene',
+   desc:'Sacred temple town turned bohemian beach destination. Five pristine beaches meet ancient temples in perfect harmony.',
+   rating:'4.7',tags:['Beach','Temple','Yoga','Trekking'],
+   highlights:['Om Beach (OM-shaped coastline)','Mahabaleshwar Temple','Half Moon Beach','Paradise Beach','Kudle Beach sunset'],
+   tips:'💡 Beach trek from Gokarna Main Beach to Paradise Beach takes 3–4 hours. Carry water and sunscreen.'},
+  {id:5,name:'Bandipur National Park',loc:'Chamarajanagar',category:'Wildlife',emoji:'🐯',badge:'Tiger Reserve',
+   desc:'One of India\'s premier tiger reserves, home to elephants, leopards, wild dogs, and hundreds of bird species in the Nilgiri Biosphere.',
+   rating:'4.6',tags:['Safari','Tigers','Elephants','Birds'],
+   highlights:['Jeep safari at dawn','Elephant sightings (highest density in India)','Leopard & wild dog sightings','Bird watching (over 200 species)','Night stay at forest lodges'],
+   tips:'💡 Morning safaris (6–9 AM) offer the best wildlife sightings. Book permits 30 days in advance on the official portal.'},
+  {id:6,name:'Badami',loc:'Bagalkot District',category:'Heritage',emoji:'🗿',badge:'Ancient',
+   desc:'Dramatic red sandstone cliffs housing 6th-century Chalukyan cave temples with exquisite rock-cut sculptures and a serene lake.',
+   rating:'4.6',tags:['Caves','Rock-cut','History','Archaeology'],
+   highlights:['4 rock-cut cave temples','Agastya Lake reflections','Bhutanatha temples','Fort with panoramic views','Aihole & Pattadakal day trip'],
+   tips:'💡 Combine Badami with Aihole and Pattadakal for a full "Cradle of Indian Architecture" experience.'},
+  {id:7,name:'Chikmagalur',loc:'Chikmagalur District',category:'Hills',emoji:'🌄',badge:'Coffee Land',
+   desc:'Birthplace of Indian coffee. Lush green hills, mountain peaks, ancient temples, and the freshest filter coffee you\'ll ever taste.',
+   rating:'4.7',tags:['Coffee','Trekking','Hills','Waterfalls'],
+   highlights:['Mullayanagiri peak (highest in Karnataka)','Baba Budangiri hills','Hebbe Falls (double waterfall)','Coffee estate tours','Bhadra Wildlife Sanctuary'],
+   tips:'💡 Trek Mullayanagiri for sunrise views. The misty roads between Chikmagalur and Kemmanagundi are picture-perfect.'},
+  {id:8,name:'Kabini',loc:'Mysuru District',category:'Wildlife',emoji:'🐘',badge:'Premium Safari',
+   desc:'Karnataka\'s most exclusive wildlife destination where the Kabini River hosts dramatic elephant herds and elusive black leopards.',
+   rating:'4.8',tags:['Elephants','Black Leopard','Coracle','Safari'],
+   highlights:['Famous black leopard sightings','Massive elephant herds at river','Coracle boat rides','Sunrise safari','Nagarhole National Park'],
+   tips:'💡 The black leopard (melanistic) at Kabini is one of the most photographed in the world. Book lodges 3–6 months early.'},
+  {id:9,name:'Murudeshwar',loc:'Uttara Kannada',category:'Spiritual',emoji:'🙏',badge:'Divine',
+   desc:'Coastal temple town dominated by the world\'s second-tallest Shiva statue at 123 feet, surrounded by Arabian Sea on three sides.',
+   rating:'4.5',tags:['Temple','Beach','Shiva Statue','Coastal'],
+   highlights:['123-ft Shiva statue','Murudeshwar Temple','RN Shetty Tower (lift to top)','Beach adjacent to temple','Scuba diving & snorkelling'],
+   tips:'💡 The view from the RN Shetty Tower next to the temple offers spectacular sunset views over the Arabian Sea.'},
+  {id:10,name:'Jog Falls',loc:'Shivamogga District',category:'Nature',emoji:'🌊',badge:'Highest Falls',
+   desc:"India's second-highest waterfall at 830 feet, plunging in four distinct streams (Raja, Rani, Rover, Rocket) through dense jungle.",
+   rating:'4.5',tags:['Waterfall','Trekking','Photography','Monsoon'],
+   highlights:['Four distinct waterfalls','Monsoon fury (Jul–Sep)','Viewpoint platform','Trek to base of falls','Linganamakki Dam nearby'],
+   tips:'💡 Visit during or just after monsoon (Aug–Sep) for the most dramatic experience. The falls are a trickle in summer.'},
+  {id:11,name:'Belur & Halebid',loc:'Hassan District',category:'Heritage',emoji:'🕌',badge:'Star Temple',
+   desc:'Twin temples of the Hoysala Empire — 12th-century sculptural marvels with thousands of intricate carvings on star-shaped platforms.',
+   rating:'4.7',tags:['Hoysala','Temples','Sculpture','Architecture'],
+   highlights:['Chennakesava Temple, Belur','Hoysaleswara Temple, Halebid','50,000+ individual sculptures','Star-shaped temple platforms','Archaeological museum'],
+   tips:'💡 Hire a local guide (₹200–300) who can decode the incredible stories carved into every inch of the temple walls.'},
+  {id:12,name:'Sakleshpur',loc:'Hassan District',category:'Nature',emoji:'🌿',badge:'Railway Trek',
+   desc:'A misty hill station famous for the legendary Sakleshpur–Donigal railway trek through 52 tunnels and 108 bridges in dense forest.',
+   rating:'4.6',tags:['Trekking','Monsoon','Coffee','Railway'],
+   highlights:['Sakleshpur–Donigal trek (52 tunnels)','Bisle Ghat – sea of clouds','Coffee and pepper estates','Manjarabad Fort (star-shaped)','Hemavathi River camping'],
+   tips:'💡 The railway trek requires a forest department permit. The best season is Jul–Sep for dramatic misty scenery.'},
+];
+
+let activeCategory = '';
+
+function renderDestinations(dests) {
+  const grid = document.getElementById('dest-grid');
+  if (!dests.length) {
+    grid.innerHTML = '<p style="color:#aaa;text-align:center;grid-column:1/-1;padding:40px;">No destinations found. Try a different search.</p>';
+    return;
+  }
+  grid.innerHTML = dests.map(d => `
+    <div class="dest-card" onclick="openModal(${d.id})">
+      <div class="dest-img" style="background:${cardBg(d.category)};">
+        ${d.emoji}
+        <span class="dest-badge">${d.badge}</span>
+      </div>
+      <div class="dest-body">
+        <div class="dest-name">${d.name}</div>
+        <div class="dest-loc">📍 ${d.loc}</div>
+        <div class="dest-desc">${d.desc.substring(0,90)}...</div>
+        <div class="dest-tags">${d.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+        <div class="dest-footer">
+          <span class="rating">⭐ ${d.rating}</span>
+          <button class="btn-explore">Explore →</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function cardBg(cat){
+  const m={Heritage:'linear-gradient(135deg,#c9a227,#8b6914)',Nature:'linear-gradient(135deg,#43a047,#1b5e20)',Wildlife:'linear-gradient(135deg,#ef6c00,#bf360c)',Beach:'linear-gradient(135deg,#0288d1,#01579b)',Hills:'linear-gradient(135deg,#558b2f,#1b5e20)',Spiritual:'linear-gradient(135deg,#f57c00,#e65100)'};
+  return m[cat]||'linear-gradient(135deg,#667eea,#764ba2)';
+}
+
+function filterDestinations(){
+  const q  = document.getElementById('search-input').value.toLowerCase();
+  const fc = document.getElementById('category-filter').value;
+  const cat = fc || activeCategory;
+  const res = DESTINATIONS.filter(d =>
+    (!q || d.name.toLowerCase().includes(q) || d.desc.toLowerCase().includes(q) || d.tags.some(t=>t.toLowerCase().includes(q))) &&
+    (!cat || d.category === cat)
+  );
+  renderDestinations(res);
+}
+
+function setPill(el, cat){
+  document.querySelectorAll('.pill').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  activeCategory = cat;
+  document.getElementById('category-filter').value = '';
+  filterDestinations();
+}
+
+function openModal(id){
+  const d = DESTINATIONS.find(x=>x.id===id);
+  if(!d) return;
+  document.getElementById('m-emoji').textContent = d.emoji;
+  document.getElementById('m-name').textContent  = d.name;
+  document.getElementById('m-meta').textContent  = `📍 ${d.loc}  •  ${d.category}  •  ⭐ ${d.rating}`;
+  document.getElementById('m-desc').textContent  = d.desc;
+  document.getElementById('m-highlights').innerHTML = d.highlights.map(h=>`<li>${h}</li>`).join('');
+  document.getElementById('m-tips').textContent  = d.tips;
+  document.getElementById('modal').classList.add('open');
+}
+function closeModal(e){ if(e.target.id==='modal') closeModalDirect(); }
+function closeModalDirect(){ document.getElementById('modal').classList.remove('open'); }
+
+function submitContact(){
+  const n=document.getElementById('c-name').value;
+  const e=document.getElementById('c-email').value;
+  if(!n||!e){alert('Please fill in your name and email.');return;}
+  document.getElementById('contact-msg').style.display='block';
+  document.getElementById('c-name').value='';
+  document.getElementById('c-email').value='';
+  document.getElementById('c-msg').value='';
+}
+
+function scrollTo(id){ document.getElementById(id).scrollIntoView({behavior:'smooth'}); }
+
+// Init
+renderDestinations(DESTINATIONS);
+</script>
+</body>
+</html>
